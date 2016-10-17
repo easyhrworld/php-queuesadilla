@@ -1,9 +1,9 @@
 {
-    "name": "josegonzalez/queuesadilla",
+    "name": "easyhrworld/queuesadilla",
     "type": "library",
     "description": "Queue background jobs to any backend system",
     "keywords": ["php", "queue"],
-    "homepage": "https://github.com/josegonzalez/php-queuesadilla",
+    "homepage": "https://github.com/easyhrworld/php-queuesadilla",
     "license": "MIT",
     "authors": [
         {
@@ -34,7 +34,7 @@
     },
     "autoload": {
         "psr-0": {
-            "josegonzalez\\Queuesadilla": ["src", "tests"]
+            "easyhrworld\\Queuesadilla": ["src", "tests"]
         }
     }
 }
