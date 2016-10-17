@@ -83,6 +83,8 @@ class SequentialWorker extends Base
         $ci = &get_instance();
 
         $ci->load->library('commonlib');
+        $password = $ci->commonlib->random_password();
+        var_dump($password);
         $success = true;
 
 //        if (!is_callable($item['class'])) {
