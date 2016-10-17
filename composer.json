@@ -34,7 +34,7 @@
     },
     "autoload": {
         "psr-0": {
-            "easyhrworld\\Queuesadilla": ["src", "tests"]
+            "josegonzalez\\Queuesadilla": ["src", "tests"]
         }
     }
 }
