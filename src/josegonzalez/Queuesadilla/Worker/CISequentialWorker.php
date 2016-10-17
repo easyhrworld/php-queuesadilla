@@ -5,7 +5,7 @@ namespace josegonzalez\Queuesadilla\Worker;
 use Exception;
 use josegonzalez\Queuesadilla\Worker\Base;
 
-class SequentialWorker extends Base
+class CISequentialWorker extends Base
 {
     /**
      * {@inheritDoc}
