@@ -91,6 +91,7 @@ class CISequentialWorker extends Base
         if (is_array($item['class']) && count($item['class']) == 2) {
             $className = $item['class'][0];
             $methodName = $item['class'][1];
+            echo "\n$className", "\n$methodName", "\n" . var_dump($job);
             log_message("error", "Class Name: $className");
             log_message("error", "Method Name: $methodName");
             log_message("error", "Options: " . var_dump($job));
