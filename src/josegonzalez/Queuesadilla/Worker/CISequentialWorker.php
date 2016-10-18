@@ -82,28 +82,21 @@ class CISequentialWorker extends Base
 
         $ci = &get_instance();
 
-        $ci->load->library('commonlib');
-        $password = $ci->commonlib->random_password();
-        var_dump($password);
-        $success = true;
+        if (!is_callable($item['class'])) {
+            return false;
+        }
 
-//        if (!is_callable($item['class'])) {
-//            return false;
-//        }
-//
-//        $success = false;
-//        if (is_array($item['class']) && count($item['class']) == 2) {
-//            $className = $item['class'][0];
-//            $methodName = $item['class'][1];
-//            $instance = new $className;
-//            $success = $instance->$methodName($job);
-//        } elseif (is_string($item['class'])) {
-//            $success = call_user_func($item['class'], $job);
-//        }
-//
-//        if ($success !== false) {
-//            $success = true;
-//        }
+        $success = false;
+        if (is_array($item['class']) && count($item['class']) == 2) {
+            $className = $item['class'][0];
+            $methodName = $item['class'][1];
+            $ci->load->library($className);
+            $success = $ci->$className->$methodName($job);
+        }
+
+        if ($success !== false) {
+            $success = true;
+        }
 
         return $success;
     }
