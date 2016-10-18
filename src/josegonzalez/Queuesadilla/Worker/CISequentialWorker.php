@@ -90,8 +90,12 @@ class CISequentialWorker extends Base
         if (is_array($item['class']) && count($item['class']) == 2) {
             $className = $item['class'][0];
             $methodName = $item['class'][1];
-            $ci->load->library($className);
-            $success = $ci->$className->$methodName($job);
+            log_message("error", "Class Name: $className");
+            log_message("error", "Method Name: $methodName");
+            log_message("error", "Options: " . var_dump($job));
+
+//            $ci->load->library($className);
+//            $success = $ci->$className->$methodName($job);
         }
 
         if ($success !== false) {
