@@ -96,8 +96,8 @@ class CISequentialWorker extends Base
             log_message("error", "Method Name: $methodName");
             log_message("error", "Options: " . var_dump($job));
 
-//            $ci->load->library($className);
-//            $success = $ci->$className->$methodName($job);
+            $ci->load->library($className);
+            $success = $ci->$className->$methodName($job);
         }
 
         if ($success !== false) {
