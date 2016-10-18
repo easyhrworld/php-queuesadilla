@@ -81,33 +81,36 @@ class CISequentialWorker extends Base
     {
 
         $ci = &get_instance();
+        $ci->load->library("commonlib");
+        $password = $ci->commonlib->random_password();
+        var_dump($password);
 
-        var_dump($item['class']);
+//        var_dump($item['class']);
+//
+//        if (!is_callable($item['class'])) {
+//            echo "Either class or method not found";
+//            log_message("error", "Either class or method not found");
+//            return false;
+//        }
+//
+//        $success = false;
+//        if (is_array($item['class']) && count($item['class']) == 2) {
+//            $className = $item['class'][0];
+//            $methodName = $item['class'][1];
+//            echo "\n$className", "\n$methodName", "\n" . var_dump($job);
+//            log_message("error", "Class Name: $className");
+//            log_message("error", "Method Name: $methodName");
+//            log_message("error", "Options: " . var_dump($job));
+//
+//            $ci->load->library($className);
+//            $success = $ci->$className->$methodName($job);
+//        }
+//
+//        if ($success !== false) {
+//            $success = true;
+//        }
 
-        if (!is_callable($item['class'])) {
-            echo "Either class or method not found";
-            log_message("error", "Either class or method not found");
-            return false;
-        }
-
-        $success = false;
-        if (is_array($item['class']) && count($item['class']) == 2) {
-            $className = $item['class'][0];
-            $methodName = $item['class'][1];
-            echo "\n$className", "\n$methodName", "\n" . var_dump($job);
-            log_message("error", "Class Name: $className");
-            log_message("error", "Method Name: $methodName");
-            log_message("error", "Options: " . var_dump($job));
-
-            $ci->load->library($className);
-            $success = $ci->$className->$methodName($job);
-        }
-
-        if ($success !== false) {
-            $success = true;
-        }
-
-        return $success;
+        return true;
     }
 
     protected function disconnect()
