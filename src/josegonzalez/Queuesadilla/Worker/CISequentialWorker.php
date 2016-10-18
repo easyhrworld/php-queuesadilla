@@ -82,7 +82,10 @@ class CISequentialWorker extends Base
 
         $ci = &get_instance();
 
+        var_dump($item['class']);
+
         if (!is_callable($item['class'])) {
+            echo "Either class or method not found";
             log_message("error", "Either class or method not found");
             return false;
         }
