@@ -7,6 +7,9 @@ use josegonzalez\Queuesadilla\Worker\Base;
 
 class CISequentialWorker extends Base
 {
+
+    protected $ci;
+
     /**
      * {@inheritDoc}
      */
@@ -37,8 +40,9 @@ class CISequentialWorker extends Base
             }
 
             $success = false;
+            $this->ci->load->library($item['class'][0]);
             $job = new $jobClass($item, $this->engine);
-            if (!is_callable($item['class'])) {
+            if (!is_callable($item['class'], true)) {
                 $this->logger()->alert('Invalid callable for job. Rejecting job from queue.');
                 $job->reject();
                 $this->dispatchEvent('Worker.job.invalid', ['job' => $job]);
@@ -72,6 +76,9 @@ class CISequentialWorker extends Base
 
     public function connect()
     {
+        // Connect to Codeigniter
+        $this->ci =& get_instance();
+
         $maxIterations = $this->maxIterations ? sprintf(', max iterations %s', $this->maxIterations) : '';
         $this->logger()->info(sprintf('Starting worker%s', $maxIterations));
         return (bool)$this->engine->connection();
@@ -79,38 +86,19 @@ class CISequentialWorker extends Base
 
     public function perform($item, $job)
     {
+        $success = false;
+        if (is_array($item['class']) && count($item['class']) == 2) {
+            $className = strtolower($item['class'][0]);
+            $methodName = $item['class'][1];
+            $args = $item['args'][0];
+            $success = $this->ci->$className->$methodName($args);
+        }
 
-        $ci = &get_instance();
-        $ci->load->library("commonlib");
-        $password = $ci->commonlib->random_password();
-        var_dump($password);
+        if ($success !== false) {
+            $success = true;
+        }
 
-//        var_dump($item['class']);
-//
-//        if (!is_callable($item['class'])) {
-//            echo "Either class or method not found";
-//            log_message("error", "Either class or method not found");
-//            return false;
-//        }
-//
-//        $success = false;
-//        if (is_array($item['class']) && count($item['class']) == 2) {
-//            $className = $item['class'][0];
-//            $methodName = $item['class'][1];
-//            echo "\n$className", "\n$methodName", "\n" . var_dump($job);
-//            log_message("error", "Class Name: $className");
-//            log_message("error", "Method Name: $methodName");
-//            log_message("error", "Options: " . var_dump($job));
-//
-//            $ci->load->library($className);
-//            $success = $ci->$className->$methodName($job);
-//        }
-//
-//        if ($success !== false) {
-//            $success = true;
-//        }
-
-        return true;
+        return $success;
     }
 
     protected function disconnect()
