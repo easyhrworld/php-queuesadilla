@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/easyhrworld/php-queuesadilla.svg?branch=master)](https://travis-ci.org/easyhrworld/php-queuesadilla)
-[![Coverage Status](https://img.shields.io/coveralls/josegonzalez/php-queuesadilla/master.svg?style=flat-square)](https://coveralls.io/r/josegonzalez/php-queuesadilla?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/easyhrworld/php-queuesadilla/badge.svg?branch=master)](https://coveralls.io/github/easyhrworld/php-queuesadilla?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/josegonzalez/queuesadilla.svg?style=flat-square)](https://packagist.org/packages/josegonzalez/queuesadilla)
 [![Latest Stable Version](https://img.shields.io/packagist/v/josegonzalez/queuesadilla.svg?style=flat-square)](https://packagist.org/packages/josegonzalez/queuesadilla)
 [![Gratipay](https://img.shields.io/gratipay/josegonzalez.svg?style=flat-square)](https://gratipay.com/~josegonzalez/)
