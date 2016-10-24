@@ -8,7 +8,7 @@ use josegonzalez\Queuesadilla\Worker\Base;
 class CISequentialWorker extends Base
 {
 
-    protected $ci;
+    protected $cig;
 
     /**
      * {@inheritDoc}
@@ -40,7 +40,7 @@ class CISequentialWorker extends Base
             }
 
             $success = false;
-            $this->ci->load->library($item['class'][0]);
+            $this->cig->load->library($item['class'][0]);
             $job = new $jobClass($item, $this->engine);
             if (!is_callable($item['class'], true)) {
                 $this->logger()->alert('Invalid callable for job. Rejecting job from queue.');
@@ -77,7 +77,7 @@ class CISequentialWorker extends Base
     public function connect()
     {
         // Connect to Codeigniter
-        $this->ci =& get_instance();
+        $this->cig =& get_instance();
 
         $maxIterations = $this->maxIterations ? sprintf(', max iterations %s', $this->maxIterations) : '';
         $this->logger()->info(sprintf('Starting worker%s', $maxIterations));
@@ -91,7 +91,7 @@ class CISequentialWorker extends Base
             $className = strtolower($item['class'][0]);
             $methodName = $item['class'][1];
             $args = $item['args'][0];
-            $success = $this->ci->$className->$methodName($args);
+            $success = $this->cig->$className->$methodName($args);
         }
 
         if ($success !== false) {
