@@ -50,7 +50,7 @@ class CISequentialWorker extends Base
             }
 
             try {
-                $success = $this->perform($item, $job);
+                $success = $this->perform($item);
             } catch (Exception $e) {
                 $this->logger()->alert(sprintf('Exception: "%s"', $e->getMessage()));
                 $this->dispatchEvent('Worker.job.exception', [
@@ -84,7 +84,7 @@ class CISequentialWorker extends Base
         return (bool)$this->engine->connection();
     }
 
-    public function perform($item, $job)
+    public function perform($item)
     {
         $success = false;
         if (is_array($item['class']) && count($item['class']) == 2) {
