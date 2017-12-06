@@ -1,56 +1,42 @@
 language: php
-
 services:
-  # - memcached
-  # - mongodb
-  - mysql
-  - postgres
-  # - rabbitmq
-  - redis-server
-
+- mysql
+- postgres
+- redis-server
 php:
-  - 5.5
-  - 5.6
-  - 7
-
+- 5.5
+- 5.6
+- 7
 env:
   global:
-   - BEANSTALK_URL="beanstalk://127.0.0.1:11300?queue=default&timeout=1"
-   - MEMORY_URL="memory:///?queue=default&timeout=1"
-   - MYSQL_URL="mysql://travis@127.0.0.1:3306/database_name?queue=default&timeout=1"
-   - NULL_URL="null:///?queue=default&timeout=1"
-   - REDIS_URL="redis://travis@127.0.0.1:6379/0?queue=default&timeout=1"
-   - MEMORY_URL="synchronous:///?queue=default&timeout=1"
-   - POSTGRES_URL="pgsql://postgres@127.0.0.1:5432/database_name?queue=default"
-
+  - BEANSTALK_URL="beanstalk://127.0.0.1:11300?queue=default&timeout=1"
+  - MEMORY_URL="memory:///?queue=default&timeout=1"
+  - MYSQL_URL="mysql://travis@127.0.0.1:3306/database_name?queue=default&timeout=1"
+  - NULL_URL="null:///?queue=default&timeout=1"
+  - REDIS_URL="redis://travis@127.0.0.1:6379/0?queue=default&timeout=1"
+  - MEMORY_URL="synchronous:///?queue=default&timeout=1"
+  - POSTGRES_URL="pgsql://postgres@127.0.0.1:5432/database_name?queue=default"
 before_script:
-  - sudo apt-get update
-  # beanstalkd
-  - sudo apt-get install -qq --force-yes beanstalkd
-  - sudo beanstalkd -d -l 127.0.0.1 -p 11300
-
-  # mysql
-  - mysql -e 'CREATE DATABASE database_name;'
-  - mysql database_name < config/schema-mysql.sql
-
-  # postgres
-  - psql -c "CREATE DATABASE database_name;" -U postgres;
-  - psql -d database_name -f config/schema-pgsql.sql -U postgres;
-
-  # extensions
-  - echo "extension = amqp.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-
-  - composer self-update
-  - composer install
-
+- sudo apt-get update
+- sudo apt-get install -qq --force-yes beanstalkd
+- sudo beanstalkd -d -l 127.0.0.1 -p 11300
+- mysql -e 'CREATE DATABASE database_name;'
+- mysql database_name < config/schema-mysql.sql
+- psql -c "CREATE DATABASE database_name;" -U postgres;
+- psql -d database_name -f config/schema-pgsql.sql -U postgres;
+- echo "extension = amqp.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+- echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+- echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+- echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+- echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+- composer self-update
+- composer install
 script:
-  - vendor/bin/phpcs --standard=psr2 src/
-  - phpunit
-  - vendor/bin/phpmd src/ text cleancode,codesize,controversial,design,naming,unusedcode
-
+- vendor/bin/phpcs --standard=psr2 src/
+- phpunit
+- vendor/bin/phpmd src/ text cleancode,codesize,controversial,design,naming,unusedcode
 after_success:
-  - php vendor/bin/coveralls -v
+- php vendor/bin/coveralls -v
+notifications:
+  slack:
+    secure: XSs5uYZ3d238ujpfk7/pI0t96eYg/Hdwcv70aNC6cP+LkSLICmzcZF6Ng+J6eeONzH+eY5c1oAtdlXp6Rgv9BSBxERKvPdfNNhPXC5F3KYoVaMyYpotTD24SUONRZlgPlU6Mn4SOBNQR1JM1Q64i+L+/LnXe2/uFioYaDNtScYpS0TWnioqxoe9/lSz4+f7OjaRZqa4mItmGqP8FhogzJG1wmxT+dRfI0KDfe2tAd/ZsN9uNe3q5kRHeJLgAiDSQu89/ykyxJlUq/FOAqmzjIHQbSmh7si6I0o1lR2oFpKpdgq9q0xfKr8DG77ALx4W4is2OyiqeAXSVEldK0lj+WrinReNOvkjzNuNR4f2SY0KCYXyAKC/2hDqSzoRwZbbmFHt4OHTYR9pK6Oclj+NFSzzYEk8I1CHD8OGIU64Fo6n6eeRVz3xiHCfCjVft+bcxpsGQbRtGjfYpuxD4LGTzm4j7qYp0JRrKMnh/g0TTqyAdA9labjpP0vGAHo+jlljqCjhVzbEo6Xd8ufUyf4uiPN3gwk1Jpl8QtKbMhkzUCKE1viYxUjbKcd3DPDMrJ0a0RVrIW3DJZ1NkOMj/cWImomSrPgjGZ0aKku9WbQw/Pvvi+croS6CrQLzosjZO2sZJ4PsjdJF3SSXfGAk20sq0zKw8StVUARytC7Kzq/OEauw=
