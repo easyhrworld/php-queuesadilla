@@ -89,6 +89,12 @@ class CISequentialWorker extends Base
         $success = false;
         if (is_array($item['class']) && count($item['class']) == 2) {
             $className = strtolower($item['class'][0]);
+            $pos = strstr($className, "/");
+            if ($pos !== false) {
+                $pos = str_replace("\\", "", $pos);
+                $pos = str_replace("/", "", $pos);
+                $className = $pos;
+            }
             $methodName = $item['class'][1];
             $args = $item['args'][0];
             $success = $this->cig->$className->$methodName($args);
